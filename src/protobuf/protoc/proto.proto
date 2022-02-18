@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package protobuf;
+
+//grpc命令
+//$ protoc.exe --go_out=plugins=grpc:./ *.proto
+
+//解决错误protoc-gen-go: unable to determine Go import path for "proto.proto"
+option go_package ="../protobuf";
+
+/*
+编译命令proto --go_out=./ *.proto
+ */
+//消息体
+enum Week {
+    Monday=0;
+    Turesday=1;
+}
+message Student{
+    int32 age=1;//编号可以不从1开始，但不能重复不能使用10000-19999
+    string name=2;
+    People p=3;
+
+    //定义数组 切片
+    repeated int32 score = 4;
+    //枚举
+    Week w = 5;
+    //联合体
+    oneof data{
+        string teacher = 6;
+        string class = 7;
+    }
+}
+
+message People{
+    int32 nation=1;
+}
+
+//添加服务
+service rpctest{
+    rpc Say(People) returns (Student);
+}
